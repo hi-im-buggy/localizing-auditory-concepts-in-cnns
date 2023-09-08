@@ -54,9 +54,15 @@ class ESC50(AudioDataset):
 
         self.df = pd.read_csv(path)
         self.class_to_idx = {}
-        self.classes = [x.replace('_',' ') for x in sorted(self.df[self.label_col].unique())]
-        for i, category in enumerate(self.classes):
-            self.class_to_idx[category] = i
+
+        for filename, category in zip(self.df[self.file_col], self.df[self.label_col]):
+            class_name = category.replace('_',' ')
+            patch_name = filename.split('/')[-1].split('.')[0]
+            class_idx = patch_name.split('-')[-1]
+            self.class_to_idx[class_name] = int(class_idx)
+        
+        self.classes = sorted(self.class_to_idx.keys(), key=lambda x: self.class_to_idx[x])
+        self.class_to_idx = {k: v for k, v in sorted(self.class_to_idx.items(), key=lambda item: item[1])}
 
     def __getitem__(self, index):
         """

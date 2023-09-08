@@ -11,13 +11,13 @@ from tqdm import tqdm
 from sklearn.metrics import accuracy_score
 
 # Load dataset
-dataset = ESC50(root="data_path", download=False)
+dataset = ESC50(root="/scratch/pratyaksh.g/esc50/ESC-50-master.zip", download=True)
 prompt = 'this is a sound of '
 y = [prompt + x for x in dataset.classes]
 
 
 # Load and initialize CLAP
-weights_path = "weights_path"
+weights_path = "/scratch/pratyaksh.g/clap/CLAP_weights_2022_microsoft.pth"
 clap_model = CLAPWrapper(weights_path, use_cuda=False)
 
 
